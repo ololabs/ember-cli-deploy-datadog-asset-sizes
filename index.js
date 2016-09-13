@@ -3,7 +3,7 @@
 
 var Promise = require('ember-cli/lib/ext/promise');
 
-var sendDeployData = function(assets, config) {
+var sendDeployData = function(assets, config, target) {
   var dogapi = require('dogapi');
 
   dogapi.initialize({
@@ -23,20 +23,22 @@ var sendDeployData = function(assets, config) {
     for (let i = 0; i < pushedAssets.length; i++) {
       let asset = pushedAssets[i];
       metrics.push({
-        metric: 'magnum.build.size',
+        metric: 'ember.deploy.build.size',
         points: [[now, asset['size']]],
         metric_type: 'count',
         tags: [
-          'filename:' + asset['name']
+          'filename:' + asset['name'],
+          'environment:' + target
         ]
       });
 
       metrics.push({
-        metric: 'magnum.build.gzipSize',
+        metric: 'ember.deploy.build.gzipSize',
         points: [[now, asset['gzipSize']]],
         metric_type: 'count',
         tags: [
-          'filename:' + asset['name']
+          'filename:' + asset['name'],
+          'environment:' + target
         ]
       });
     }
@@ -59,6 +61,7 @@ module.exports = {
 
       didBuild: function(context) {
         var emberCliDeployAssetSizesConfig = context.config.emberCliDeployDataDogAssetSizes;
+        var target = context.deployTarget;
         var outputPath = context.project.root + '/' + context.distDir;
 
         var AssetSizePrinter = require('ember-cli/lib/models/asset-size-printer');
@@ -76,7 +79,7 @@ module.exports = {
         }
 
         return makeAssetSizesObject.then(function(assets){
-          return sendDeployData(assets, emberCliDeployAssetSizesConfig);
+          return sendDeployData(assets, emberCliDeployAssetSizesConfig, target);
         });
       }
     };
