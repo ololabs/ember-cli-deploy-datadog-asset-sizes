@@ -19,7 +19,8 @@ module.exports = function(deployTarget) {
     // truncated for brevity
     emberCliDeployAssetSizes: {
       DATADOG_API_KEY: <your-api-key>,
-      DATADOG_APP_KEY: <your-app-key>
+      DATADOG_APP_KEY: <your-app-key>,
+      DATADOG_NAMESPACE: <some-namespace>
     }
   };
 

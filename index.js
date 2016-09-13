@@ -16,6 +16,8 @@ var sendDeployData = function(assets, config, target) {
     return asset;
   })
 
+  var namespace = config.DATADOG_NAMESPACE || 'embercli.deploy';
+
   var now = parseInt(new Date().getTime() / 1000);
 
   return new Promise(function(resolve, reject) {
@@ -23,7 +25,7 @@ var sendDeployData = function(assets, config, target) {
     for (let i = 0; i < pushedAssets.length; i++) {
       let asset = pushedAssets[i];
       metrics.push({
-        metric: 'ember.deploy.build.size',
+        metric: namespace + '.build.size',
         points: [[now, asset['size']]],
         metric_type: 'count',
         tags: [
@@ -33,7 +35,7 @@ var sendDeployData = function(assets, config, target) {
       });
 
       metrics.push({
-        metric: 'ember.deploy.build.gzipSize',
+        metric: namespace + '.build.gzipSize',
         points: [[now, asset['gzipSize']]],
         metric_type: 'count',
         tags: [
@@ -45,9 +47,10 @@ var sendDeployData = function(assets, config, target) {
 
     try {
       dogapi.metric.send_all(metrics);
-      resolve();
+      resolve(metrics);
     } catch(e) {
       reject(e);
+      console.log(e);
     }
   });
 }
