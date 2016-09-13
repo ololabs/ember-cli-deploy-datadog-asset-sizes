@@ -1,31 +1,29 @@
-# ember-cli-deploy-asset-sizes
+# ember-cli-deploy-datadog-asset-sizes
 
 [WIP]
 
-Keep track of your ember apps asset sizes over time. Each deploy the addon will push your apps assets sizes to [keen.io](https://keen.io).
-
-Use [ember-dashboard](https://github.com/kiwiupover/ember-dashboard) to display your deloy data.
+Keep track of your ember apps asset sizes over time. Each deploy the addon will push your apps assets sizes to DataDog.
 
 ## Installation
 
 ```sh
-ember install ember-cli-deploy-asset-sizes
+ember install ember-cli-deploy-datadog-asset-sizes
 ```
 
-### Add you keen.io keys
-Add your keen.io key to deploy.js
+### Add you DataDog keys
+Add your DataDog key to deploy.js
 
 ```js
 module.exports = function(deployTarget) {
   var ENV = {
     // truncated for brevity
     emberCliDeployAssetSizes: {
-      KEEN_PROJECT_ID: <your-keen-project-id>,
-      KEEN_WRITE_KEY: <your-keen-write-key>
+      DATADOG_API_KEY: <your-api-key>,
+      DATADOG_APP_KEY: <your-app-key>
     }
   };
 
-  // ttruncated for brevity
+  // truncated for brevity
   return ENV;
 };
 ```

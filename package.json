@@ -1,6 +1,6 @@
 {
-  "name": "ember-cli-deploy-asset-sizes",
-  "version": "0.0.4",
+  "name": "ember-cli-deploy-datadog-asset-sizes",
+  "version": "0.0.1",
   "description": "Keep track of your Ember apps asset sizes over time.",
   "directories": {
     "doc": "doc",
@@ -11,7 +11,7 @@
     "start": "ember server",
     "test": "ember try:each"
   },
-  "repository": "https://github.com/kiwiupover/ember-cli-deploy-asset-sizes",
+  "repository": "https://github.com/minichate/ember-cli-deploy-datadog-asset-sizes",
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -45,7 +45,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
     "ember-cli-deploy-plugin": "^0.2.6",
-    "keen.io": "^0.1.3"
+    "dogapi": "2.5.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

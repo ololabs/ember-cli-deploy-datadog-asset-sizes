@@ -4,11 +4,11 @@
 var Promise = require('ember-cli/lib/ext/promise');
 
 var sendDeployData = function(assets, config) {
-  var keen = require('keen.io');
+  var dogapi = require('dogapi');
 
-  var keen = keen.configure({
-    projectId: config.KEEN_PROJECT_ID,
-    writeKey: config.KEEN_WRITE_KEY
+  dogapi.initialize({
+    api_key: config.DATADOG_API_KEY,
+    app_key: config.DATADOG_APP_KEY
   });
 
   var pushedAssets = assets.map(function(asset){
@@ -16,30 +16,49 @@ var sendDeployData = function(assets, config) {
     return asset;
   })
 
+  var now = parseInt(new Date().getTime() / 1000);
+
   return new Promise(function(resolve, reject) {
+    let metrics = [];
+    for (let i = 0; i < pushedAssets.length; i++) {
+      let asset = pushedAssets[i];
+      metrics.push({
+        metric: 'magnum.build.size',
+        points: [[now, asset['size']]],
+        metric_type: 'count',
+        tags: [
+          'filename:' + asset['name']
+        ]
+      });
 
-    let keenPayload = JSON.stringify({ deploy: pushedAssets });
+      metrics.push({
+        metric: 'magnum.build.gzipSize',
+        points: [[now, asset['gzipSize']]],
+        metric_type: 'count',
+        tags: [
+          'filename:' + asset['name']
+        ]
+      });
+    }
 
-    keen.addEvents(keenPayload, function(err, res) {
-      console.log('keen-data', err, res);
-      if(err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
-    });
+    try {
+      dogapi.metric.send_all(metrics);
+      resolve();
+    } catch(e) {
+      reject(e);
+    }
   });
 }
 
 module.exports = {
-  name: 'ember-cli-deploy-asset-sizes',
+  name: 'ember-cli-deploy-datadog-asset-sizes',
 
   createDeployPlugin: function(options) {
     return {
       name: options.name,
 
-      willUpload: function(context) {
-        var emberCliDeployAssetSizesConfig = context.config.emberCliDeployAssetSizes;
+      didBuild: function(context) {
+        var emberCliDeployAssetSizesConfig = context.config.emberCliDeployDataDogAssetSizes;
         var outputPath = context.project.root + '/' + context.distDir;
 
         var AssetSizePrinter = require('ember-cli/lib/models/asset-size-printer');
