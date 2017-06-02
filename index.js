@@ -1,7 +1,7 @@
 /* jshint node: true */
 'use strict';
 
-var Promise = require('ember-cli/lib/ext/promise');
+var RSVP = require('rsvp');
 
 var sendDeployData = function(assets, config, target) {
   var dogapi = require('dogapi');
@@ -20,7 +20,7 @@ var sendDeployData = function(assets, config, target) {
 
   var now = parseInt(new Date().getTime() / 1000);
 
-  return new Promise(function(resolve, reject) {
+  return new RSVP.Promise(function(resolve, reject) {
     let metrics = [];
     for (let i = 0; i < pushedAssets.length; i++) {
       let asset = pushedAssets[i];
@@ -73,7 +73,7 @@ module.exports = {
           outputPath: outputPath
         });
 
-        var makeAssetSizesObject
+        var makeAssetSizesObject;
 
         if (typeof sizePrinter.makeAssetSizesObject !== 'undefined') {
           makeAssetSizesObject = sizePrinter.makeAssetSizesObject();
