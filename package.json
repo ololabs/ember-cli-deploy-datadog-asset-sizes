@@ -43,7 +43,6 @@
     "ember-cli-deploy-plugin"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6",
     "ember-cli-deploy-plugin": "^0.2.6",
     "dogapi": "2.5.0",
     "rsvp": "^3.5.0"
