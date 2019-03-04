@@ -28,15 +28,14 @@ module.exports = function(deployTarget) {
   return ENV;
 };
 ```
-## Deploy
 
-```sh
-ember deploy production
-```
+Contributing
+------------------------------------------------------------------------------
 
-## Running Tests
-
-* `npm test` Comming soon! :(
+See the [Contributing](CONTRIBUTING.md) guide for details.
 
 
-For more information on using ember-cli-deploy, visit [ember-cli-deploy.com](http://ember-cli-deploy.com/).
+License
+------------------------------------------------------------------------------
+
+This project is licensed under the [MIT License](LICENSE.md).
